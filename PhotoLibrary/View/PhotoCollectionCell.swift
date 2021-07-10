@@ -16,7 +16,7 @@ class PhotoCollectionCell: BaseCell {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: 68, height: 68))
         view.clipsToBounds = false
         view.layer.shadowColor = UIColor.black.cgColor
-        view.layer.shadowOpacity = 0.7
+        view.layer.shadowOpacity = 1
         view.layer.shadowOffset = CGSize.zero
         view.layer.shadowRadius = 2
         view.layer.shadowPath = UIBezierPath(roundedRect: view.bounds, cornerRadius: 10).cgPath
@@ -37,7 +37,7 @@ class PhotoCollectionCell: BaseCell {
     var authorLabel: UILabel = {
         let label: UILabel = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .black
+        label.textColor = .white
         label.text = "Author:"
         label.font = UIFont.boldSystemFont(ofSize:10)
         return label
@@ -46,7 +46,7 @@ class PhotoCollectionCell: BaseCell {
     var authorTextLabel: UILabel = {
         let label: UILabel = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .black
+        label.textColor = .white
         label.text = "Not available!"
         label.sizeToFit()
         label.font = UIFont.systemFont(ofSize:12)
@@ -74,7 +74,9 @@ class PhotoCollectionCell: BaseCell {
     override func addViews() {
         [shadowView, photoImageView, authorLabel,
           authorTextLabel, photoIdLabel, photoIdTextLabel].forEach { addSubview($0) }
+        
         [self.photoIdLabel, authorTextLabel, photoIdTextLabel].forEach { $0.sizeToFit()}
+        self.backgroundColor = .darkGray
     }
     
     override func layoutSubviews() {
@@ -82,11 +84,9 @@ class PhotoCollectionCell: BaseCell {
     }
     
     override func constraintViews() {
-        
-        
         self.shadowView.anchor(top: self.safeAreaLayoutGuide.topAnchor, leading: self.safeAreaLayoutGuide.leadingAnchor, bottom: nil, trailing: nil, centerX: nil, padding: .init(top: 8, left: 8, bottom: 0, right: 0), size: .init(width: 68, height: 68))
         
-        self.photoImageView.anchor(top: self.shadowView.topAnchor, leading: self.shadowView.leadingAnchor, bottom: nil, trailing: nil, centerX: nil, padding: .init(top: 0, left: 0, bottom: 0, right: 0), size: .init(width: 64, height: 64))
+        self.photoImageView.anchor(top: self.shadowView.topAnchor, leading: self.shadowView.leadingAnchor, bottom: nil, trailing: nil, centerX: nil, padding: .init(top: 0, left: 0, bottom: 0, right: 0), size: .init(width: 68, height: 68))
 
         self.authorLabel.anchor(top: self.shadowView.topAnchor, leading: self.shadowView.trailingAnchor, bottom: nil, trailing: nil, centerX: nil, padding: .init(top: 0, left: 8, bottom: 0, right: 0))
 

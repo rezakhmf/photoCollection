@@ -11,44 +11,33 @@ import Foundation
 import Foundation
 import UIKit
 
-protocol ReusableCell: AnyObject {
-    static var defaultReuseIdentifier: String { get }
-}
-
-extension ReusableCell where Self: UITableViewCell {
-    static var defaultReuseIdentifier: String { NSStringFromClass(self) }
-}
-
-//
-protocol NibLoadableCell: AnyObject {
-    static var nibName: String { get }
-}
-
-extension NibLoadableCell where Self: UITableViewCell {
-    static var nibName: String {
-        return NSStringFromClass(self).components(separatedBy: (".")).last!
-    }
-}
-
-//
-extension UITableView {
-    
-    func register<T: UITableViewCell>(_ cellClass: T.Type) where T: ReusableCell {
-        register(T.self, forCellReuseIdentifier: T.defaultReuseIdentifier)
-    }
-    
-    func register<T: UITableViewCell>(nib: T.Type) where T: ReusableCell, T: NibLoadableCell {
-        let bundle = Bundle(for: T.self)
-        let nib = UINib(nibName: T.nibName, bundle: bundle)
-        
-        register(nib, forCellReuseIdentifier: T.defaultReuseIdentifier)
-    }
-    
-    func dequeueCell<T: UITableViewCell>(forIndexPath indexPath: IndexPath) -> T where T: ReusableCell {
-        guard let cell = dequeueReusableCell(withIdentifier: T.defaultReuseIdentifier, for: indexPath) as? T else {
-            fatalError("Could not dequeue cell with identifier: \(T.defaultReuseIdentifier)")
+// MARK: - Methods
+public extension UICollectionView {
+    func dequeueReusableSupplementaryView<T: UICollectionReusableView>(ofKind kind: String, withClass name: T.Type, for indexPath: IndexPath) -> T {
+        guard let cell = dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: String(describing: name), for: indexPath) as? T else {
+            fatalError("Couldn't find UICollectionReusableView for \(String(describing: name)), make sure the view is registered with collection view")
         }
-        
         return cell
     }
+    
+    func dequeueReusableCell<T: UICollectionViewCell>(withClass name: T.Type, for indexPath: IndexPath) -> T {
+        guard let cell = dequeueReusableCell(withReuseIdentifier: String(describing: name), for: indexPath) as? T else {
+            fatalError("Couldn't find UICollectionViewCell for \(String(describing: name)), make sure the cell is registered with collection view")
+        }
+        return cell
+    }
+
+
+    func register<T: UICollectionReusableView>(supplementaryViewOfKind kind: String, withClass name: T.Type) {
+        register(T.self, forSupplementaryViewOfKind: kind, withReuseIdentifier: String(describing: name))
+    }
+
+    /// SwifterSwift: Register UICollectionViewCell using class name.
+    ///
+    /// - Parameter name: UICollectionViewCell type.
+    func register<T: UICollectionViewCell>(cellWithClass name: T.Type) {
+        register(T.self, forCellWithReuseIdentifier: String(describing: name))
+    }
+
+
 }

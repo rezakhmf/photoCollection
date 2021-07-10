@@ -20,6 +20,12 @@ class PixabayNetworkClient {
     private let apiKey = "15333185-5ec0a04a2ee6bb7f6120de9f8"
     private let baseURLString = "https://pixabay.com/api/"
     private let urlSession = URLSession.shared
+    
+    private let cachedImages = NSCache<NSURL, UIImage>()
+    public final func image(url: NSURL) -> UIImage? {
+        return cachedImages.object(forKey: url)
+    }
+    
 
     func fetchImageList(for query: String, completion: @escaping (Result<[PhotoInfo], Error>) -> Void) {
         guard let url = URL(string: "\(baseURLString)?key=\(apiKey)&q=\(query)&image_type=photo&per_page=75") else {
@@ -39,17 +45,26 @@ class PixabayNetworkClient {
     }
 
     func fetchImage(on urlString: String, completion: @escaping (Result<UIImage, Error>) -> Void) {
-        guard let url = URL(string: urlString) else {
+        guard let url = NSURL(string: urlString) else {
             completion(.failure(.failedToCreateURL))
             return
         }
+        // Check for a cached image
+        if let cachedImage = image(url: url) {
+            DispatchQueue.main.async {
+                completion(.success(cachedImage))
+            }
+            return
+        }
 
-        urlSession.dataTask(with: url) { (jsonData, response, error) in
+        urlSession.dataTask(with: url as URL) { (jsonData, response, error) in
             if let error = error {
                 completion(.failure(.networkError(error: error, response: response)))
             }
 
             if let image = jsonData.flatMap(UIImage.init(data:)) {
+                // Cache the image
+                self.cachedImages.setObject(image, forKey: url)
                 completion(.success(image))
             } else {
                 let decodingError = NSError(domain: "com.photoLibrary.PixabayNetworkClient", code: -1, userInfo: nil)

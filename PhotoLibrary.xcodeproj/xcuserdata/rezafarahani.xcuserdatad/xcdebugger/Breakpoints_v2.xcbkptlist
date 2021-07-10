@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "11469F43-C2F6-4D39-80AE-942765E0DE40"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D28AB7F5-FB1A-4CF3-B7E7-2AD387013F5A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PhotoLibrary/View/ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
+            landmarkName = "setup()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F3F002AD-2C95-4E90-86FB-32E883244454"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PhotoLibrary/ViewModel/PhotoCollectionViewModelProvider.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "24"
+            endingLineNumber = "24"
+            landmarkName = "getPhotosCollection(completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "F3F002AD-2C95-4E90-86FB-32E883244454 - c23bb7bf5b616f44"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PhotoLibrary.PhotoCollectionViewModel.getPhotosCollection(completion: (Swift.Array&lt;PhotoLibrary.PhotoInfo&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "PhotoLibrary"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rezafarahani/Downloads/PhotoLibraryTest/PhotoLibrary/ViewModel/PhotoCollectionViewModelProvider.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "24"
+                  endingLineNumber = "24"
+                  offsetFromSymbolStart = "37">
+               </Location>
+               <Location
+                  uuid = "F3F002AD-2C95-4E90-86FB-32E883244454 - 1e217f18e33ad0d7"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;Swift.Array&lt;PhotoLibrary.PhotoInfo&gt;, PhotoLibrary.PixabayNetworkClient.Error&gt;) -&gt; () in PhotoLibrary.PhotoCollectionViewModel.getPhotosCollection(completion: (Swift.Array&lt;PhotoLibrary.PhotoInfo&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "PhotoLibrary"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rezafarahani/Downloads/PhotoLibraryTest/PhotoLibrary/ViewModel/PhotoCollectionViewModelProvider.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "26"
+                  endingLineNumber = "26"
+                  offsetFromSymbolStart = "288">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8C53168F-5B07-4203-B8B9-E192D80CA4B0"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PhotoLibrary/Model/Repository/PixabayNetworkClient.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "31"
+            endingLineNumber = "31"
+            landmarkName = "fetchImageList(for:completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "40BDB61F-5957-46A7-A907-550F54201162"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PhotoLibrary/Model/Repository/PixabayNetworkClient.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "41"
+            endingLineNumber = "41"
+            landmarkName = "fetchImageList(for:completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B8CDE206-E3F8-4E01-A849-BC3994008973"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PhotoLibrary/Model/Repository/PixabayNetworkClient.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "36"
+            endingLineNumber = "36"
+            landmarkName = "fetchImageList(for:completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "B8CDE206-E3F8-4E01-A849-BC3994008973 - adf085b167a2a513"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PhotoLibrary.PixabayNetworkClient.fetchImageList(for: Swift.String, completion: (Swift.Result&lt;Swift.Array&lt;PhotoLibrary.PhotoInfo&gt;, PhotoLibrary.PixabayNetworkClient.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "PhotoLibrary"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rezafarahani/Downloads/PhotoLibraryTest/PhotoLibrary/Model/Repository/PixabayNetworkClient.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "36"
+                  endingLineNumber = "36"
+                  offsetFromSymbolStart = "1055">
+               </Location>
+               <Location
+                  uuid = "B8CDE206-E3F8-4E01-A849-BC3994008973 - 90c35d96e112320a"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in PhotoLibrary.PixabayNetworkClient.fetchImageList(for: Swift.String, completion: (Swift.Result&lt;Swift.Array&lt;PhotoLibrary.PhotoInfo&gt;, PhotoLibrary.PixabayNetworkClient.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "PhotoLibrary"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rezafarahani/Downloads/PhotoLibraryTest/PhotoLibrary/Model/Repository/PixabayNetworkClient.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "36"
+                  endingLineNumber = "36"
+                  offsetFromSymbolStart = "339">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A7F365B2-C3A6-4DEF-8CBD-8B7D1FC7D53B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PhotoLibrary/View/ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "134"
+            endingLineNumber = "134"
+            landmarkName = "tableView(_:numberOfRowsInSection:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5B225E19-A186-4174-838C-04400232E01F"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PhotoLibrary/View/Helpers/Extension/View+Constraint.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "76"
+            endingLineNumber = "76"
+            landmarkName = "anchor(top:leading:bottom:trailing:centerX:padding:size:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

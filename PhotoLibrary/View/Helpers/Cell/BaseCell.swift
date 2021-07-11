@@ -20,12 +20,6 @@ class BaseCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
         }
     
-//    public override func layoutSubviews() {
-//        super.layoutSubviews()
-//        
-//        constraintViews()
-//    }
-    
     func addViews() { }          // to overload
     func constraintViews() { }   // to overload
     

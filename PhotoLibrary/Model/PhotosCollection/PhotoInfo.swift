@@ -9,11 +9,11 @@
 
 
 struct PhotoInfo: Decodable {
-    let id: Int
-    let user: String
-    let comments: Int
-    let downloads: Int
-    let views: Int
-    let likes: Int
-    let previewURL: String
+    let id: Int?
+    let user: String?
+    let comments: Int?
+    let downloads: Int?
+    let views: Int?
+    let likes: Int?
+    let previewURL: String?
 }

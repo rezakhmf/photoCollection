@@ -6,9 +6,7 @@
 //  Copyright © 2021 Squire. All rights reserved.
 //
 
-
-
 struct PhotosCollection: Decodable {
-    let hits: [PhotoInfo]
-    let total: Int
+    let hits: [PhotoInfo]?
+    let total: Int?
 }

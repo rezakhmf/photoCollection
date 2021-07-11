@@ -9,8 +9,6 @@
 import Foundation
 import UIKit
 
-private let baseURLString = "https://pixabay.com/api/"
-
 class ImageDataStore {
     private var images: [ImageModel] = [ImageModel]()
     public var photos : [PhotoInfo] = [PhotoInfo]() {

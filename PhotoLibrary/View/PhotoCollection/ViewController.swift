@@ -12,23 +12,27 @@ class ViewController: UIViewController {
     
     
     // MARK: - Dependencies
-    var viewModel: PhotoCollectionViewModel?
+    var photoCollectionviewModel: PhotoCollectionViewModel?
+    var photoDetailsviewModel: PhotoDetailsViewModel?
+    
+    private let spacing:CGFloat = 8.0
+    
     
     let listTableViewController = PhotoDetailsViewController()
     
     //MARK: - UI components
     private var collectionView: UICollectionView?
+    private let refreshControl = UIRefreshControl()
     
     // MARK: - Parameters
     private lazy var loadingOperations = [IndexPath : DataLoadOperation]()
-    private lazy var dataStore = ImageDataStore()
-    private lazy var loadingQueue = OperationQueue()
-    
     
     private var photos: [PhotoInfo]? {
         didSet {
             DispatchQueue.main.async {
                 self.collectionView?.reloadData()
+                self.collectionView?.selectItem(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: .bottom)
+                self.collectionView(self.collectionView ?? UICollectionView(), didSelectItemAt: IndexPath(item: 0, section: 0))
             }
         }
     }
@@ -37,10 +41,6 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         setup()
     }
-    
-    @IBAction func openDetailsScreen() {
-        self.present(listTableViewController, animated: true, completion: nil)
-    }
 }
 
 // MARK:- setup views
@@ -48,11 +48,9 @@ extension ViewController {
     
     func setup() {
         
-        self.viewModel = PhotoCollectionViewModel()
-        self.viewModel?.getPhotosCollection { photos in
-            self.photos = photos
-            self.dataStore.photos = photos
-        }
+        self.photoCollectionviewModel = PhotoCollectionViewModel()
+        self.photoDetailsviewModel = PhotoDetailsViewModel()
+        refreshData()
         
         configureViews()
         addViews()
@@ -65,38 +63,57 @@ extension ViewController {
     }
     
     func constraintViews() {
-        self.collectionView?.anchor(top: self.view.safeAreaLayoutGuide.topAnchor, leading: self.view.safeAreaLayoutGuide.leadingAnchor, bottom: nil, trailing: nil, centerX: nil, padding: .init(top: 16, left: 8, bottom: 0, right:16), size: .init(width: self.view.frame.width, height: self.view.frame.height/2))
+        self.collectionView?.anchor(top: self.view.safeAreaLayoutGuide.topAnchor, leading: self.view.safeAreaLayoutGuide.leadingAnchor, bottom: self.view.safeAreaLayoutGuide.bottomAnchor, trailing: nil, centerX: nil, padding: .init(top: 16, left: 8, bottom: 0, right:16), size: .init(width: self.view.frame.width, height: self.view.frame.height / 2))
     }
     
     func configureViews() {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
-        //layout.minimumLineSpacing = 100
-        //layout.minimumInteritemSpacing = 10
-        layout.scrollDirection = .horizontal
         
         self.collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+        self.collectionView?.refreshControl = self.refreshControl
         self.collectionView?.register(cellWithClass: PhotoCollectionCell.self)
         self.collectionView?.delegate = self
         self.collectionView?.dataSource = self
         self.collectionView?.backgroundColor = .gray
+        
+        // Configure Refresh Control
+        self.refreshControl.addTarget(self, action: #selector(refreshPhotoLibrary(_:)), for: .valueChanged)
+        self.refreshControl.tintColor = UIColor(red:0.25, green:0.72, blue:0.85, alpha:1.0)
+        self.refreshControl.attributedTitle = NSAttributedString(string: "refresh data ...", attributes: nil)
+    }
+    
+    @objc private func refreshPhotoLibrary(_ sender: Any) {
+        //MARK: - fetch info visa refresh
+        refreshData()
+    }
+    
+    private func refreshData() {
+        //MARK: - fetch info visa refresh
+        self.photoCollectionviewModel?.getPhotosCollection { photos in
+            self.photos = photos
+            self.photoCollectionviewModel?.dataStore.photos = photos
+            DispatchQueue.main.async {
+                self.refreshControl.endRefreshing()
+            }
+        }
+        
     }
 }
 
-
-// MARK:- TableView Delegate
+// MARK:- UICollectionViewDelegate Delegate
 extension ViewController: UICollectionViewDelegate {
     
-     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
         guard let cell = cell as? PhotoCollectionCell else { return }
-
-
+        
+        
         // How should the operation update the cell once the data has been loaded?
         let updateCellClosure: (UIImage?) -> () = { [unowned self] (image) in
             cell.configure(photoInfo: photos?[indexPath.row], image: image)
         }
-
+        
         // Try to find an existing data loader
         if let dataLoader = loadingOperations[indexPath] {
             // Has the data already been loaded?
@@ -109,47 +126,62 @@ extension ViewController: UICollectionViewDelegate {
             }
         } else {
             // Need to create a data loaded for this index path
-            if let dataLoader = dataStore.loadImage(at: indexPath.row) {
+            if let dataLoader = self.photoCollectionviewModel?.dataStore.loadImage(at: indexPath.row) {
                 // Provide the completion closure, and kick off the loading operation
                 dataLoader.loadingCompleteHandler = updateCellClosure
-                loadingQueue.addOperation(dataLoader)
+                self.photoCollectionviewModel?.loadingQueue.addOperation(dataLoader)
                 loadingOperations[indexPath] = dataLoader
             }
         }
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         // If there's a data loader for this index path we don't need it any more. Cancel and dispose
         if let dataLoader = loadingOperations[indexPath] {
             dataLoader.cancel()
             loadingOperations.removeValue(forKey: indexPath)
         }
-
     }
     
-  
-    
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        guard let photo = photos?[indexPath.row] else {
+            return
+        }
+        
+        photoDetailsviewModel?.getPhotoInfo(photoInfo: photo) { result in
+            if(result) {
+                self.listTableViewController.photoDetails?.removeAll()
+                self.listTableViewController.photoDetails = self.photoDetailsviewModel?.deteils
+                
+                self.view.addSubview(self.listTableViewController.tableView)
+                
+                self.listTableViewController.tableView.anchor(top: self.collectionView?.bottomAnchor, leading: self.collectionView?.leadingAnchor, bottom: self.view.safeAreaLayoutGuide.bottomAnchor, trailing: self.collectionView?.trailingAnchor, centerX: nil, padding: .init(top: 16, left: 8, bottom: 0, right:16), size: .init(width: self.view.frame.width, height: 200))
+            }
+        }
+    }
     
 }
 
 extension ViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            let referenceHeight: CGFloat = 200 // Approximate height of your cell
-            let referenceWidth = collectionView.safeAreaLayoutGuide.layoutFrame.width / 2
-            return CGSize(width: referenceWidth, height: referenceHeight)
+        
+        let numberOfItemsPerRow:CGFloat = 2
+        let spacingBetweenCells:CGFloat = 2
+        
+        let totalSpacing = (2 * self.spacing) + ((numberOfItemsPerRow - 1) * spacingBetweenCells) //Amount of total spacing in a row
+        
+        if let collection = self.collectionView{
+            let width = (collection.bounds.width - totalSpacing)/numberOfItemsPerRow
+            return CGSize(width: width, height: width)
+        }else{
+            return CGSize(width: 0, height: 0)
         }
+    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-            return 10
-        }
-    
-    func collectionView(_ collectionView: UICollectionView,
-                                layout collectionViewLayout: UICollectionViewLayout,
-                                minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-                return 3.0
-            }
-
+        return 10
+    }
 }
 
 // MARK:- TableView Datasource
@@ -162,7 +194,7 @@ extension ViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-
+    
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: PhotoCollectionCell = collectionView.dequeueReusableCell(withClass: PhotoCollectionCell.self, for: indexPath)
@@ -171,23 +203,21 @@ extension ViewController: UICollectionViewDataSource {
         
         return cell
     }
-    
-    
 }
 
 // MARK:- TableView Prefetching DataSource
 extension ViewController: UICollectionViewDataSourcePrefetching {
-
+    
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
             if let _ = loadingOperations[indexPath] { return }
-            if let dataLoader = dataStore.loadImage(at: indexPath.row) {
-                loadingQueue.addOperation(dataLoader)
+            if let dataLoader = self.photoCollectionviewModel?.dataStore.loadImage(at: indexPath.row) {
+                self.photoCollectionviewModel?.loadingQueue.addOperation(dataLoader)
                 loadingOperations[indexPath] = dataLoader
             }
         }
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
             if let dataLoader = loadingOperations[indexPath] {
@@ -197,7 +227,6 @@ extension ViewController: UICollectionViewDataSourcePrefetching {
         }
     }
 }
-
 
 
 

@@ -12,4 +12,17 @@ final class PhotoDetailTableViewCell: UITableViewCell {
     static let reuseIdentifier = "PhotoDetailTableViewCell"
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var subtitleLabel: UILabel!
+    
+    func configure(_ photoDetails: PhotoDetails?) {
+        
+        guard let title = photoDetails?.title,
+              let subtitle = photoDetails?.subTitle else {
+            print("data is not complete")
+            return
+        }
+    
+        
+        titleLabel.text = title
+        subtitleLabel.text = subtitle
+    }
 }

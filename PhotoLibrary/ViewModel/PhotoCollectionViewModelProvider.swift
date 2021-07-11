@@ -15,9 +15,15 @@ protocol PhotoCollectionViewModelProvider: AnyObject {
 public class PhotoCollectionViewModel: PhotoCollectionViewModelProvider {
     
     let networkRepository : PixabayNetworkClient
+    var dataStore: ImageDataStore
+    var loadingQueue:  OperationQueue
     
-    init(networkRepository : PixabayNetworkClient = PixabayNetworkClient()) {
+    init(networkRepository : PixabayNetworkClient = PixabayNetworkClient(),
+         dataStore: ImageDataStore = ImageDataStore(),
+         loadingQueue: OperationQueue = OperationQueue()) {
         self.networkRepository = networkRepository
+        self.dataStore = dataStore
+        self.loadingQueue = loadingQueue
     }
     
     func getPhotosCollection(completion: @escaping ([PhotoInfo]) -> Void) {

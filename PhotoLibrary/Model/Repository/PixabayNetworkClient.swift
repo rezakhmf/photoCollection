@@ -39,7 +39,7 @@ class PixabayNetworkClient {
                 return
             }
             let result: Result<PhotosCollection, Error> = self.handleResponse(data: jsonData, error: error, response: response)
-            completion(result.map { $0.hits })
+            completion(result.map { $0.hits ?? [PhotoInfo]() })
 
         }.resume()
     }

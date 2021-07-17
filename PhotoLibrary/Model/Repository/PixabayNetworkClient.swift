@@ -22,6 +22,7 @@ class PixabayNetworkClient {
     private let urlSession = URLSession.shared
     
     private let cachedImages = NSCache<NSURL, UIImage>()
+    
     public final func image(url: NSURL) -> UIImage? {
         return cachedImages.object(forKey: url)
     }

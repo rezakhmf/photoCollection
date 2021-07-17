@@ -63,12 +63,14 @@ extension ViewController {
     }
     
     func constraintViews() {
-        self.collectionView?.anchor(top: self.view.safeAreaLayoutGuide.topAnchor, leading: self.view.safeAreaLayoutGuide.leadingAnchor, bottom: self.view.safeAreaLayoutGuide.bottomAnchor, trailing: nil, centerX: nil, padding: .init(top: 16, left: 8, bottom: 0, right:16), size: .init(width: self.view.frame.width, height: self.view.frame.height / 2))
+        self.collectionView?.anchor(top: self.view.safeAreaLayoutGuide.topAnchor, leading: self.view.safeAreaLayoutGuide.leadingAnchor, bottom: self.view.safeAreaLayoutGuide.bottomAnchor, trailing: self.view.safeAreaLayoutGuide.trailingAnchor, centerX: nil, padding: .init(top: 16, left: 8, bottom: 0, right:16), size: .init(width: self.view.frame.width, height: self.view.frame.height / 2))
     }
     
     func configureViews() {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+        
+        self.view.backgroundColor = .gray
         
         self.collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         self.collectionView?.refreshControl = self.refreshControl
@@ -156,7 +158,7 @@ extension ViewController: UICollectionViewDelegate {
                 
                 self.view.addSubview(self.listTableViewController.tableView)
                 
-                self.listTableViewController.tableView.anchor(top: self.collectionView?.bottomAnchor, leading: self.collectionView?.leadingAnchor, bottom: self.view.safeAreaLayoutGuide.bottomAnchor, trailing: self.collectionView?.trailingAnchor, centerX: nil, padding: .init(top: 16, left: 8, bottom: 0, right:16), size: .init(width: self.view.frame.width, height: 200))
+                self.listTableViewController.tableView.anchor(top: self.collectionView?.bottomAnchor, leading: self.collectionView?.leadingAnchor, bottom: self.view.safeAreaLayoutGuide.bottomAnchor, trailing: self.collectionView?.trailingAnchor, centerX: nil, padding: .init(top: 16, left: 0, bottom: 0, right:0), size: .init(width: self.view.frame.width, height: 200))
             }
         }
     }

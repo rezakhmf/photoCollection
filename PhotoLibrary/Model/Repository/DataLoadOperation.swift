@@ -10,18 +10,23 @@ import Foundation
 import UIKit
 
 class ImageDataStore {
+    
+    // MARK: - Dependencies
+    let networkRepository : PixabayNetworkClient
+    
     private var images: [ImageModel] = [ImageModel]()
+    
     public var photos : [PhotoInfo] = [PhotoInfo]() {
         didSet {
             images.removeAll()
             photos.forEach { images.append(ImageModel(url: $0.previewURL)) }
         }
     }
+    
     public var numberOfImage: Int {
         return images.count
     }
     
-    let networkRepository : PixabayNetworkClient
     
     init(networkRepository: PixabayNetworkClient = PixabayNetworkClient()) {
         self.networkRepository = networkRepository
@@ -39,7 +44,6 @@ class DataLoadOperation: Operation {
     
     // MARK: - Dependencies
     let networkRepository : PixabayNetworkClient
-    //ghalate in
     
     var image: UIImage?
     var loadingCompleteHandler: ((UIImage?) -> ())?

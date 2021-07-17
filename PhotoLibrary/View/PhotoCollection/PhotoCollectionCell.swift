@@ -103,7 +103,6 @@ class PhotoCollectionCell: BaseCell {
         
         guard let author = photoInfo?.user, let photoId = photoInfo?.id,
               let image = image else {
-            print("one of the necessary info for building the cell was empty")
             return
         }
         

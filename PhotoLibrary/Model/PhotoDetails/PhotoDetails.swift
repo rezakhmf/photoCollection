@@ -9,6 +9,6 @@
 import Foundation
 
 struct PhotoDetails {
-    var title: String?
-    var subTitle: String?
+    let title: String?
+    let subTitle: String?
 }

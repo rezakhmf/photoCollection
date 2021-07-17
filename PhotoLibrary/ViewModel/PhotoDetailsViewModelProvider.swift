@@ -10,9 +10,6 @@ import Foundation
 
 protocol PhotoDetailsViewModelProvider: AnyObject {
     func getPhotoInfo(photoInfo: PhotoInfo,completion: @escaping (Bool) -> Void)
-    
-    
-    
 }
 
 public class PhotoDetailsViewModel: PhotoDetailsViewModelProvider {
@@ -28,15 +25,19 @@ public class PhotoDetailsViewModel: PhotoDetailsViewModelProvider {
             return
         }
         
-        deteils.removeAll()
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.deteils.removeAll()
+            
+            self.deteils.append(PhotoDetails(title: "Author Name" , subTitle: author))
+            self.deteils.append(PhotoDetails(title: "Count of Download" , subTitle: String(downloads)))
+            self.deteils.append(PhotoDetails(title: "Count of Views" , subTitle: String(views)))
+            self.deteils.append(PhotoDetails(title: "Count of Likes" , subTitle: String(likes)))
+            self.deteils.append(PhotoDetails(title: "Count of Comment" , subTitle: String(comments)))
+            
+        }
         
-        deteils.append(PhotoDetails(title: "Author Name" , subTitle: author))
-        deteils.append(PhotoDetails(title: "Count of Download" , subTitle: String(downloads)))
-        deteils.append(PhotoDetails(title: "Count of Views" , subTitle: String(views)))
-        deteils.append(PhotoDetails(title: "Count of Likes" , subTitle: String(likes)))
-        deteils.append(PhotoDetails(title: "Count of Comment" , subTitle: String(comments)))
-        
-        
-        completion(true)
+        DispatchQueue.main.async {
+            completion(true)
+        }
     }
 }
